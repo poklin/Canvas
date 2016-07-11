@@ -42,6 +42,13 @@ class ProfileController extends Controller
         return view('backend.profile.edit', compact('data'));
     }
 
+    public function editPrivacy()
+    {
+        return view('backend.profile.privacy', [
+            "data" => array_merge(Auth::user()->toArray(), config('blog'))
+        ]);
+    }
+
     /**
      * Update the user profile information.
      *

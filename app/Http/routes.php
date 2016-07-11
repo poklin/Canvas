@@ -27,6 +27,7 @@ $router->group([
     Route::delete('admin/upload/file', 'UploadController@deleteFile');
     Route::post('admin/upload/folder', 'UploadController@createFolder');
     Route::delete('admin/upload/folder', 'UploadController@deleteFolder');
+    Route::get('admin/profile/privacy', 'ProfileController@editPrivacy')->name('admin.profile.privacy');
     Route::resource('admin/profile', 'ProfileController');
     Route::resource('admin/search', 'SearchController');
 });

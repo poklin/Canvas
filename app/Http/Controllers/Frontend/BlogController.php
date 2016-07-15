@@ -3,6 +3,7 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Models\Tag;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Post;
 use App\Http\Requests;
 use App\Jobs\BlogIndexData;
@@ -18,11 +19,11 @@ class BlogController extends Controller
      */
     public function index(Request $request)
     {
-        $user = User::findOrFail(1);
+        $user = Auth::user();
         $tag = $request->get('tag');
         $data = $this->dispatch(new BlogIndexData($tag));
         $layout = $tag ? Tag::layout($tag)->first() : 'frontend.blog.index';
-
+        var_dump($data);
         return view($layout, $data)->with(compact('user'));
     }
 

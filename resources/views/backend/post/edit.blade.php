@@ -44,6 +44,7 @@
                     <div class="card-body card-padding">
                         <form class="keyboard-save" role="form" method="POST" id="postUpdate" action="{{ route('admin.post.update', $id) }}">
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                            <input type="hidden" id="user_id" name="user_id" value={{ $user_id }}>
                             <input type="hidden" name="_method" value="PUT">
 
                             @include('backend.post.partials.form')
@@ -70,11 +71,6 @@
 @section('unique-js')
     @include('backend.post.partials.summernote')
     {!! JsValidator::formRequest('App\Http\Requests\PostUpdateRequest', '#postUpdate'); !!}
-
-    @if(Session::get('_update-post'))
-        @include('backend.post.partials.notifications.update-post')
-        {{ \Session::forget('_update-post') }}
-    @endif
 
     <script>
         $(function () {

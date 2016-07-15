@@ -52,7 +52,7 @@
                                         @foreach ($posts as $post)
                                             <tr>
                                                 <td>Post</td>
-                                                <td><a href="/admin/post/{{ $post->id }}/edit">{{ $post->title }}</a></td>
+                                                <td><a href="/admin/post/{{ $post->slug }}/edit">{{ $post->title }}</a></td>
                                                 <td>{{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $post->created_at)->format('M d, Y') }}</td>
                                                 <td>{{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $post->updated_at)->format('M d, Y') }}</td>
                                             </tr>

@@ -9,17 +9,18 @@ use Illuminate\Contracts\Bus\SelfHandling;
 class PostFormFields extends Job implements SelfHandling
 {
     /**
-     * The id (if any) of the Post row
+     * The slug (if any) of the Post row
      *
-     * @var integer
+     * @var String slug
      */
-    protected $id;
+    protected $slug;
     /**
      * List of fields and default value for each field
      *
      * @var array
      */
     protected $fieldList = [
+        'user_id' => '',
         'title' => '',
         'subtitle' => '',
         'page_image' => '',
@@ -39,9 +40,9 @@ class PostFormFields extends Job implements SelfHandling
      *
      * @param integer $id
      */
-    public function __construct($id = null)
+    public function __construct($slug = null)
     {
-        $this->id = $id;
+        $this->slug = $slug;
     }
 
     /**
@@ -51,9 +52,11 @@ class PostFormFields extends Job implements SelfHandling
      */
     public function handle()
     {
+        $post = Post::with('tags')->whereSlug($this->slug)->firstOrFail();
+
         $fields = $this->fieldList;
-        if ($this->id) {
-            $fields = $this->fieldsFromModel($this->id, $fields);
+        if ($this->slug) {
+            $fields = $this->fieldsFromModel($post->id, $fields);
         } else {
             $when = Carbon::now()->addHour();
             $fields['publish_date'] = $when->format('M-j-Y');

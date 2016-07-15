@@ -3,6 +3,7 @@ namespace App\Models;
 
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
@@ -34,4 +35,57 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      */
     protected $hidden = ['password', 'remember_token'];
 
+
+    /**
+     * Get the posts relationship.
+     *
+     * @return BelongsToMany
+     */
+    public function posts()
+    {
+        return $this->hasMany('App\Models\Post');
+    }
+
+    /**
+     * Get the roles relationship.
+     *
+     * @return BelongsToMany
+     */
+    public function role()
+    {
+        return $this->belongsToMany('App\Models\Role', 'user_role', 'user_id', 'role_id');
+    }
+
+    /**
+     * Check the role of the user with the argument.
+     *
+     * @param string $role
+     * @return boolean
+     */
+    public function hasRole($role)
+    {
+        if($this->role()->where('name',$role)->first()) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Check is the post belongs to the user
+     *
+     * @param int $post_id
+     *
+     * @return Boolean
+     */
+    public function checkPostsOwner($post_id)
+    {
+        $post = Post::findOrFail($post_id);
+        $user = Auth::user();
+
+        if($post->user_id === $user->id)
+        {
+            return true;
+        }
+        return false;
+    }
 }

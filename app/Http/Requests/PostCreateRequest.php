@@ -19,6 +19,7 @@ class PostCreateRequest extends Request
     public function rules()
     {
         return [
+            'user_id' => 'required',
             'title' => 'required',
             'subtitle' => 'required',
             'content' => 'required',
@@ -33,6 +34,7 @@ class PostCreateRequest extends Request
     public function postFillData()
     {
         return [
+            'user_id' => $this->user_id,
             'title' => $this->title,
             'subtitle' => $this->subtitle,
             'page_image' => $this->page_image,

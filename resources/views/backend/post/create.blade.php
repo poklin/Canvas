@@ -28,7 +28,7 @@
                     <div class="card-body card-padding">
                         <form class="keyboard-save" role="form" method="POST" id="postCreate" action="{{ route('admin.post.store') }}">
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
-
+                            <input type="hidden" id="user_id" name="user_id" value="{{ Auth::user()->id }}">
                             @include('backend.post.partials.form')
 
                             <div class="form-group">

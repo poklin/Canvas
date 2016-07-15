@@ -8,6 +8,7 @@
         <meta name="description" content="{{ $meta_description }}">
 
         @include('frontend.partials.css')
+        @include('frontend.partials.js')
     </head>
     <body>
         @include('frontend.blog.partials.header')

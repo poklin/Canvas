@@ -2,6 +2,7 @@
 namespace App\Http\Controllers\Backend;
 
 use Session;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Post;
 use App\Http\Requests;
 use App\Jobs\PostFormFields;
@@ -21,7 +22,18 @@ class PostController extends Controller
      */
     public function index()
     {
-        $data = Post::all();
+        $user = Auth::user();
+        if($user->hasRole('Admin'))
+        {
+            $data = Post::all();
+        }
+        else
+        {
+            $data = $user->posts()->get();
+        }
+
+        //dd($data);
+        //$data = Post::all();
 
         foreach ($data as $post) {
             $post->subtitle = mb_strimwidth($post->subtitle, 0, self::TRIM_WIDTH, self::TRIM_MARKER);
@@ -60,14 +72,23 @@ class PostController extends Controller
     /**
      * Show the post edit form
      *
-     * @param  int $id
+     * @param  var $slug
      *
      * @return \Illuminate\View\View
      */
-    public function edit($id)
+    public function edit($slug)
     {
-        $data = $this->dispatch(new PostFormFields($id));
-        return view('backend.post.edit', $data);
+        $user = Auth::user();
+        $user_id = $user->id;
+        $post = Post::with('tags')->whereSlug($slug)->firstOrFail();
+        $data = $this->dispatch(new PostFormFields($slug));
+        
+        if ($user->checkPostsOwner($post->id))
+        {
+            return view('backend.post.edit', $data);
+        }
+        return response("Insufficient Permission", 401);
+
     }
 
     /**
@@ -80,13 +101,14 @@ class PostController extends Controller
      */
     public function update(PostUpdateRequest $request, $id)
     {
+        debugbar()->info("here");
         $post = Post::findOrFail($id);
         $post->fill($request->postFillData());
         $post->save();
         $post->syncTags($request->get('tags', []));
 
         Session::set('_update-post', trans('messages.update_success', ['entity' => 'Post']));
-        return redirect("/admin/post/$id/edit");
+        return redirect("/admin/post");
     }
 
     /**

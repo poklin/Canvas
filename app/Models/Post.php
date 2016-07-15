@@ -20,7 +20,7 @@ class Post extends Model
      * @var array
      */
     protected $fillable = [
-        'title', 'subtitle', 'content_raw', 'page_image', 'meta_description',
+        'user_id','title', 'subtitle', 'content_raw', 'page_image', 'meta_description',
         'layout', 'is_draft', 'published_at',
     ];
 
@@ -32,6 +32,16 @@ class Post extends Model
     public function tags()
     {
         return $this->belongsToMany('App\Models\Tag', 'post_tag_pivot');
+    }
+
+    /**
+     * Get the users relationship.
+     *
+     * @return BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User');
     }
 
     /**

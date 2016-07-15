@@ -5,68 +5,28 @@
 @stop
 
 @section('content')
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                @if (isset($tag->title))
-                    <p class="tag-link">Explore <a href="#">{{ $tag->title or '' }}</a></p>
-                    <p class="tag-subtitle">- {{ $tag->subtitle }} -</p>
-                @endif
-                {{-- The Posts --}}
-                @foreach ($posts as $post)
-                    <div class="post-preview">
-                        <h2 class="post-title">
-                            <a href="{{ $post->url($tag) }}">{{ $post->title }}</a>
-                        </h2>
-                        <p class="post-meta">
-                            {{ $post->published_at->diffForHumans() }}
-                            @unless ($post->tags->isEmpty())
-                                in {!! implode(', ', $post->tagLinks()) !!}
-                            @endunless
-                        </p>
-                    </div>
-                    <hr>
-                @endforeach
-                {{-- The Pager --}}
-                <ul class="pager">
-                    {{-- Reverse direction --}}
-                    @if ($reverse_direction)
-                        @if ($posts->currentPage() > 1)
-                            <li class="previous">
-                                <a href="{!! $posts->url($posts->currentPage() - 1) !!}">
-                                    <i class="fa fa-angle-left fa-lg"></i>
-                                    Previous {{ $tag->tag }}
-                                </a>
-                            </li>
-                        @endif
-                        @if ($posts->hasMorePages())
-                            <li class="next">
-                                <a href="{!! $posts->nextPageUrl() !!}">
-                                    Next {{ $tag->tag }}
-                                    <i class="fa fa-angle-right"></i>
-                                </a>
-                            </li>
-                        @endif
-                    @else
-                        @if ($posts->currentPage() > 1)
-                            <li class="previous">
-                                <a href="{!! $posts->url($posts->currentPage() - 1) !!}">
-                                    <i class="fa fa-angle-left fa-lg"></i>
-                                    Newer {{ $tag ? $tag->tag : '' }}
-                                </a>
-                            </li>
-                        @endif
-                        @if ($posts->hasMorePages())
-                            <li class="next">
-                                <a href="{!! $posts->nextPageUrl() !!}">
-                                    Older {{ $tag ? $tag->tag : '' }}
-                                    <i class="fa fa-angle-right"></i>
-                                </a>
-                            </li>
-                        @endif
-                    @endif
-                </ul>
+
+    <div id="container"></div>
+    <script type="text/x-handlebars-template" id="waterfall-tpl">
+        {{#result}}
+        <div class="item">
+            <a href="#"><img src="{{image}}" width="{{width}}" height="{{height}}" /></a>
+            <div>
+                <p>{{desp}}</p>
             </div>
         </div>
-    </div>
+        {{/result}}
+    </script>
+    <script>
+        $('#container').waterfall({
+            itemCls: 'item',
+            colWidth: 222,
+            gutterWidth: 15,
+            gutterHeight: 15,
+            checkImagesLoaded: false,
+            path: function(page) {
+                return 'data/data1.json?page=' + page;
+            }
+        });
+    </script>
 @stop

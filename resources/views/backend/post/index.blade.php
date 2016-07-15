@@ -33,8 +33,9 @@
                         @include('shared.success')
 
                         <h2>Manage Posts&nbsp;
+                            @if(Auth::user()->hasRole('Author'))
                             <a href="{{url('admin/post/create')}}"><i class="zmdi zmdi-plus-circle" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Create a new post"></i></a>
-
+                            @endif
                             <small>This page provides a comprehensive overview of all current blog posts. Click the edit or preview links next to each post to modify specific details, publish a post or view any changes from the browser.</small>
                         </h2>
                     </div>
@@ -43,11 +44,11 @@
                         <table id="data-table-posts" class="table table-condensed table-vmiddle">
                             <thead>
                                 <tr>
-                                    <th data-column-id="id" data-type="numeric" data-sortable="false">Id</th>
+                                    <th data-column-id="id" data-type="numeric" data-order="desc">Id</th>
                                     <th data-column-id="title">Title</th>
                                     <th data-column-id="subtitle">Subtitle</th>
                                     <th data-column-id="slug">Slug</th>
-                                    <th data-column-id="published" data-type="date" data-order="desc">Published</th>
+                                    <th data-column-id="published" data-type="date">Published</th>
                                     <th data-column-id="commands" data-formatter="commands" data-sortable="false">Actions</th>
                                 </tr>
                             </thead>
@@ -79,6 +80,11 @@
     @if(Session::get('_new-post'))
         @include('backend.post.partials.notifications.create-post')
         {{ \Session::forget('_new-post') }}
+    @endif
+
+    @if(Session::get('_update-post'))
+        @include('backend.post.partials.notifications.update-post')
+        {{ \Session::forget('_update-post') }}
     @endif
 
     @if(Session::get('_delete-post'))

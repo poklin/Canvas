@@ -22,6 +22,7 @@
 $factory->define(App\Models\Post::class, function ($faker) {
   return [
     'title'             => 'Hello world',
+    'slug'              => 'hello-world',
     'subtitle'          => 'Canvas is a minimal blogging application for developers. Canvas attempts to make blogging simple and enjoyable by utilizing the latest technologies and keeping the administration as simple as possible with the primary focus on writing.',
     'page_image'        => 'placeholder.png',
     'content_raw'       => view('shared.helpers.welcome'),

@@ -6,7 +6,7 @@
                 <h4 class="modal-title">Image preview</h4>
             </div>
             <div class="modal-body">
-                <img id="preview-image" src="x" class="img-responsive">
+                <img id="preview-image" class="img-responsive">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>

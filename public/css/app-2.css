@@ -1371,10 +1371,10 @@ html.ismobile .page-loader {
 }
 
 @media print {
-@page {
+  @page {
     margin: 0;
     size: auto;
-}
+  }
 
   body {
     margin: 0mm 0mm 0mm 0mm !important;

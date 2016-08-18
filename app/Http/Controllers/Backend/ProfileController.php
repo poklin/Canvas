@@ -35,11 +35,16 @@ class ProfileController extends Controller
      */
     public function edit($id)
     {
-        $userData = User::where('id', $id)->firstOrFail()->toArray();
-        $blogData = config('blog');
-        $data = array_merge($userData, $blogData);
+        if (Auth::user()->id == $id)
+        {
+            $userData = User::where('id', $id)->firstOrFail()->toArray();
+            $blogData = config('blog');
+            $data = array_merge($userData, $blogData);
 
-        return view('backend.profile.edit', compact('data'));
+            return view('backend.profile.edit', compact('data'));
+        }
+        return response("Insufficient Permission", 401);
+
     }
 
     public function editPrivacy()

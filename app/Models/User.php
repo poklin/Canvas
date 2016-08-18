@@ -4,6 +4,7 @@ namespace App\Models;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Role;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
@@ -26,7 +27,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      *
      * @var array
      */
-    protected $fillable = ['first_name', 'last_name', 'display_name', 'url', 'twitter', 'facebook', 'github', 'address', 'city', 'country', 'bio', 'job', 'phone', 'gender', 'relationship', 'birthday', 'email', 'password'];
+    protected $fillable = ['first_name', 'last_name', 'display_name', 'url', 'facebook_id', 'twitter', 'facebook', 'github', 'address', 'city', 'country', 'bio', 'job', 'phone', 'gender', 'relationship', 'birthday', 'email', 'password'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -39,7 +40,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     /**
      * Get the posts relationship.
      *
-     * @return BelongsToMany
+     * @return hasMany
      */
     public function posts()
     {
@@ -71,6 +72,18 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     }
 
     /**
+     * Assign the role of the user with the argument.
+     *
+     * @param string $role
+     * @return boolean
+     */
+    public function assignRole($role)
+    {
+        $assignedRole = Role::find($role);
+        $this->role()->save($assignedRole);
+    }
+
+    /**
      * Check is the post belongs to the user
      *
      * @param int $post_id
@@ -87,5 +100,44 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             return true;
         }
         return false;
+    }
+
+    /**
+     * One User Has Many Followers
+     */
+    public function followers()
+    {
+        return $this->belongsToMany(
+            self::class,
+            'follows',
+            'followee_id',
+            'follower_id'
+        );
+    }
+
+    /**
+     * One User Follows Many Users
+     */
+    public function followees()
+    {
+        return $this->belongsToMany(
+            self::class,
+            'follows',
+            'follower_id',
+            'followee_id'
+        );
+    }
+
+    public function follow($followUser)
+    {
+        $User = User::find($followUser);
+        $this->followees()->save($User);
+
+    }
+
+    public function unfollow($followUser)
+    {
+        $User = User::find($followUser);
+        $this->followees()->detach($User);
     }
 }

@@ -12,11 +12,11 @@ return [
   | on sites such as Facebook and Twitter.
   |
   */
-  'name'            => 'Canvas',
-  'title'           => 'Canvas',
+  'name'            => 'Crafted',
+  'title'           => 'Crafted',
   'subtitle'        => 'Minimal Blogging App',
   'description'     => 'Blog',
-  'author'          => 'Todd Austin',
+  'author'          => 'Tey Pok Lin',
 
   /*
   |--------------------------------------------------------------------------
@@ -28,8 +28,9 @@ return [
   | identifier here or in your .env
   |
   */
-  'posts_per_page'  => 6,
-  'disqus_name' => env('DISQUS_NAME', 'YOUR_UNIQUE_SHORTNAME'),
+  'posts_per_page'  => 20,
+  'disqus_name' => env('DISQUS_NAME', null),
+  'tracking_id' => env('TRACKING_ID', null),
 
   /*
   |--------------------------------------------------------------------------
@@ -47,5 +48,5 @@ return [
     'storage'       => 'local',
     'webpath'       => '/uploads/',
   ],
-
+  'trim_width'      => 40,
 ];

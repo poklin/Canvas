@@ -43,7 +43,7 @@
                         <table id="data-table-tags" class="table table-condensed table-vmiddle">
                             <thead>
                                 <tr>
-                                    <th data-column-id="id" data-type="numeric" data-sortable="false">Id</th>
+                                    <th data-column-id="id" data-type="numeric" data-sortable="false" data-order="desc">Id</th>
                                     <th data-column-id="title" data-order="desc">Title</th>
                                     <th data-column-id="subtitle">Subtitle</th>
                                     <th data-column-id="layout">Layout</th>

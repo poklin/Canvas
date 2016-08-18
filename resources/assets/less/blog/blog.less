@@ -2,12 +2,7 @@
 @import "../clean-blog/clean-blog";
 @import "//fonts.googleapis.com/css?family=Source+Sans+Pro:400,900italic,900,700italic,700,600italic,600,400italic,300,200italic,200,300italic";
 @import "//fonts.googleapis.com/css?family=Source+Code+Pro:400,200,300,500,600,700,900";
-
-/*
-|--------------------------------------------------------------------------
-| Set custom styles for the blog here.
-|--------------------------------------------------------------------------
-*/
+@import "custom.less";
 
 .dsq-brlink {
   display: none;
@@ -58,7 +53,7 @@ dd {
 
 pre {
   border: none;
-  background-color: @gist-background;
+  background-color: @pre-background !important;
   border-radius: 3px !important;
   font-size: 13px !important;
   font-family: 'Source Code Pro' !important;
@@ -73,7 +68,6 @@ pre {
     -webkit-box-shadow: none !important;
     -moz-box-shadow: none !important;
     box-shadow: none !important;
-    color: black !important;
 }
 
 }
@@ -82,10 +76,13 @@ pre {
   padding: 0 !important;
 }
 
+.container img {
+  max-width: 100%;
+}
+
 code {
-  color: rgb(253, 103, 105) !important;
   border: none;
-  background-color: @gist-background;
+  background-color: @pre-background !important;
   border-radius: 3px !important;
   font-size: 11px !important;
   font-family: 'Source Code Pro' !important;

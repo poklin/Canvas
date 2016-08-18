@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend;
 use App\Models\Tag;
 use App\Models\Post;
 use App\Http\Requests;
+use App\Services\Search;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
@@ -16,7 +17,7 @@ class SearchController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function index()
+    public function index(Search $search)
     {
         $user = Auth::user();
         $params = \Request::get('search');
@@ -33,6 +34,8 @@ class SearchController extends Controller
             $tags = Tag::where('title', 'LIKE', '%'.$params.'%')->get();
         }
 
+        //$posts = $search->posts();
+        //$tags  = $search->tags();
 
         return view('backend.search.index', compact('params', 'posts', 'tags'));
     }

@@ -20,6 +20,7 @@ class PostCreateRequest extends Request
     {
         return [
             'user_id' => 'required',
+            'slug' => 'required',
             'title' => 'required',
             'subtitle' => 'required',
             'content' => 'required',
@@ -36,6 +37,7 @@ class PostCreateRequest extends Request
         return [
             'user_id' => $this->user_id,
             'title' => $this->title,
+            'slug' => $this->slug,
             'subtitle' => $this->subtitle,
             'page_image' => $this->page_image,
             'content_raw' => $this->get('content'),

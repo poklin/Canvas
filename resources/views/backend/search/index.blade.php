@@ -29,7 +29,7 @@
                             </li>
                         </ul>
 
-                        <h2>Search Results for <em>{{ $params }}</em></h2>
+                        <h2>Search Results for <em>{{ request('search') }}</em></h2>
                         <br>
                         <div class="table-responsive">
                             <table class="table table-condensed table-vmiddle">

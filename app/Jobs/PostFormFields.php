@@ -22,6 +22,7 @@ class PostFormFields extends Job implements SelfHandling
     protected $fieldList = [
         'user_id' => '',
         'title' => '',
+        'slug' => '',
         'subtitle' => '',
         'page_image' => '',
         'content' => '',
@@ -52,8 +53,11 @@ class PostFormFields extends Job implements SelfHandling
      */
     public function handle()
     {
-        $post = Post::with('tags')->whereSlug($this->slug)->firstOrFail();
-
+        if($this->slug)
+        {
+            $post = Post::with('tags')->whereSlug($this->slug)->firstOrFail();
+        }
+        
         $fields = $this->fieldList;
         if ($this->slug) {
             $fields = $this->fieldsFromModel($post->id, $fields);

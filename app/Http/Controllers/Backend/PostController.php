@@ -12,8 +12,6 @@ use App\Http\Requests\PostUpdateRequest;
 
 class PostController extends Controller
 {
-    const TRIM_WIDTH = 40;
-    const TRIM_MARKER = "...";
 
     /**
      * Display a listing of the posts
@@ -31,15 +29,10 @@ class PostController extends Controller
         {
             $data = $user->posts()->get();
         }
-
-        //dd($data);
+        $name = $user->display_name;
         //$data = Post::all();
 
-        foreach ($data as $post) {
-            $post->subtitle = mb_strimwidth($post->subtitle, 0, self::TRIM_WIDTH, self::TRIM_MARKER);
-        }
-
-        return view('backend.post.index', compact('data'));
+        return view('backend.post.index', compact('data','name'));
     }
 
     /**
@@ -79,7 +72,6 @@ class PostController extends Controller
     public function edit($slug)
     {
         $user = Auth::user();
-        $user_id = $user->id;
         $post = Post::with('tags')->whereSlug($slug)->firstOrFail();
         $data = $this->dispatch(new PostFormFields($slug));
         

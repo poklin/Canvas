@@ -1,13 +1,13 @@
 <?php
 namespace App\Http\Controllers\Auth;
 
+use Laravel\Socialite\Facades\Socialite;
 use Session;
 use Validator;
 use JsValidator;
 use App\Models\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 
 class AuthController extends Controller
@@ -24,8 +24,7 @@ class AuthController extends Controller
     */
     use AuthenticatesAndRegistersUsers, ThrottlesLogins;
 
-    protected $redirectAfterLogout = 'auth/login';
-
+    protected $redirectAfterLogout = '';
     protected $redirectTo = 'admin/post';
 
     /**
@@ -47,9 +46,10 @@ class AuthController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => 'required|max:255',
+            'name' => 'required|max:40',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|confirmed|min:6',
+            'display_name' => 'required|max:40|unique:users',
         ]);
     }
 
@@ -65,7 +65,8 @@ class AuthController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
-        ]);
+            'display_name' => $data['display_name'],
+        ]); 
     }
 
     public function authenticated(\Illuminate\Http\Request $request, User $user)
@@ -73,4 +74,37 @@ class AuthController extends Controller
         Session::set('_login', trans('messages.login', ['first_name' => $user->first_name, 'last_name' => $user->last_name]));
         return redirect()->intended($this->redirectPath());
     }
+
+    public function redirectToFacebook()
+    {
+        return Socialite::with('facebook')->redirect();
+    }
+
+    public function getFacebookCallback()
+    {
+        $data = Socialite::with('facebook')->user();
+        $user = User::where('email',$data->email)->first();
+
+        if(!is_null($user))
+        {
+            Auth::login($user);
+            $user->last_name = $data->user['name'];
+            $user->facebook_id = $data->id;
+            $user->save();
+        } else {
+            $user = User::where('facebook_id',$data->id)->first();
+            if(is_null($user)) {
+                //Create a new user
+                $user = new User();
+                $user->last_name = $data->user['name'];
+                $user->email = $data->email;
+                $user->facebook_id = $data->id;
+                $user->save();
+            }
+
+            Auth::login($user);
+        }
+        return redirect('/')->with('success','Successfully Logged In!');
+    }
+
 }

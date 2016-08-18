@@ -5,19 +5,23 @@ use Carbon\Carbon;
 use App\Models\Tag;
 use App\Models\Post;
 use Illuminate\Contracts\Bus\SelfHandling;
+use DateTimeZone;
+use Illuminate\Support\Facades\Config;
 
 class BlogIndexData extends Job implements SelfHandling
 {
     protected $tag;
 
     /**
-     * Constructor
+     *  BlogIndexData Constructor
      *
      * @param string|null $tag
      */
-    public function __construct($tag)
+    public function __construct($tag, $search = null, $user_id)
     {
         $this->tag = $tag;
+        $this->search = $search;
+        $this->user_id = $user_id;
     }
 
     /**
@@ -41,10 +45,26 @@ class BlogIndexData extends Job implements SelfHandling
     protected function normalIndexData()
     {
         $posts = Post::with('tags')
-            ->where('published_at', '<=', Carbon::now())
+            ->where('published_at', '<=', Carbon::now(new DateTimeZone(config('app.timezone'))))
             ->where('is_draft', 0)
-            ->orderBy('published_at', 'desc')
-            ->simplePaginate(config('blog.posts_per_page'));
+            ->orderBy('published_at', 'desc');
+
+        if($this->user_id !== null)
+        {
+            $posts = Post::with('tags')
+                ->where('user_id',$this->user_id)
+                ->where('published_at', '<=', Carbon::now(new DateTimeZone(config('app.timezone'))))
+                ->where('is_draft', 0)
+                ->orderBy('published_at', 'desc');
+        }
+
+        if($this->search !== null) {
+            $posts = $posts->where('content_raw', 'LIKE', '%' . html_entity_decode($this->search) . '%')
+                            ->orwhere('title', 'LIKE', '%' . html_entity_decode($this->search) . '%')
+                            ->orwhere('subtitle', 'LIKE', '%' . html_entity_decode($this->search) . '%');
+        }
+        $posts = $posts->simplePaginate(config('blog.posts_per_page'));
+        
         return [
             'title' => config('blog.title'),
             'subtitle' => config('blog.subtitle'),

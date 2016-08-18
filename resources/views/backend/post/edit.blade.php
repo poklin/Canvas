@@ -37,7 +37,7 @@
 
                         <h2>
                             Edit <em>{{ $title }}</em>
-                            <small>Last edited on {{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $updated_at)->format('M d, Y') }} at {{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $updated_at)->format('g:i A') }}</small>
+                            <small>Last edited on {{ $updated_at->format('M d, Y') }} at {{ $updated_at->format('g:i A') }}</small>
                         </h2>
 
                     </div>
@@ -69,7 +69,7 @@
 @stop
 
 @section('unique-js')
-    @include('backend.post.partials.summernote')
+    @include('backend.post.partials.editor')
     {!! JsValidator::formRequest('App\Http\Requests\PostUpdateRequest', '#postUpdate'); !!}
 
     <script>

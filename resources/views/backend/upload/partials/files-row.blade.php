@@ -1,7 +1,7 @@
 @foreach ($files as $file)
     <tr>
         <td>
-            <a href="{{ $file['webPath'] }}" target="_blank">
+            <a href="{{ $file['webPath'] }}" onclick="preview_image('{{ $file['webPath'] }}'); return false;">
                 @if (is_image($file['mimeType']))
                     <i class="zmdi zmdi-image"></i>
                 @else

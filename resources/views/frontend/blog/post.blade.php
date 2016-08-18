@@ -15,6 +15,7 @@
 
 @section('og-description')
     <meta property="og:description" content="{{ $post->meta_description }}"/>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 @stop
 
 @section('title')
@@ -26,19 +27,29 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+
                     @if ($post->page_image)
                         <div class="text-center">
                             <img src="{{ asset('uploads/' . $post->page_image) }}" class="post-hero">
                         </div>
                     @endif
                     <p class="post-page-meta">
-                        {{ \Carbon\Carbon::parse($post->published_at)->toFormattedDateString() }}
+                        {{ \Carbon\Carbon::parse($post->created_at)->toFormattedDateString() }}
                         @if ($post->tags->count())
                             in
                             {!! join(', ', $post->tagLinks()) !!}
                         @endif
                     </p>
                     <h1 class="post-page-title">{{ $post->title }}</h1>
+                        <div class="meta">by {{ $post->user()->get()->pluck('display_name')[0] }}</div>
+                        @if( Auth::check() && (Auth::user()->id != $post->user_id))
+                            @if(Auth::user()->followees()->get()->pluck('id')->contains($post->user_id))
+                                <button class="btn followButton following" rel="6">Follow</button>
+                            @else
+                                <button class="btn followButton" rel="6">Follow</button>
+                            @endif
+                        @endif
+
                     <hr>
                     {!! $post->content_html !!}
                 </div>
@@ -53,7 +64,7 @@
                     @if ($tag && $tag->reverse_direction)
                         @if ($post->olderPost($tag))
                             <li class="previous">
-                                <a href="{!! $post->olderPost($tag)->url($tag) !!}">
+                                <a href="{{ URL::to('/blog/'.Auth::user()->display_name.'/'.$post->olderPost($tag)->slug) }}">
                                     <i class="fa fa-angle-left fa-lg"></i>
                                     Previous {{ $tag->tag }}
                                 </a>
@@ -61,7 +72,7 @@
                         @endif
                         @if ($post->newerPost($tag))
                             <li class="next">
-                                <a href="{!! $post->newerPost($tag)->url($tag) !!}">
+                                <a href="{{ URL::to('/blog/'.Auth::user()->display_name.'/'.$post->newerPost($tag)->slug) }}">
                                     Next {{ $tag->tag }}
                                     <i class="fa fa-angle-right"></i>
                                 </a>
@@ -70,7 +81,7 @@
                     @else
                         @if ($post->newerPost($tag))
                             <li class="previous">
-                                <a href="{!! $post->newerPost($tag)->url($tag) !!}">
+                                <a href="{{ URL::to('/blog/'.Auth::user()->display_name.'/'.$post->newerPost($tag)->slug) }}">
                                     <i class="fa fa-angle-left fa-lg"></i>
                                     Newer
                                 </a>
@@ -78,7 +89,7 @@
                         @endif
                         @if ($post->olderPost($tag))
                             <li class="next">
-                                <a href="{!! $post->olderPost($tag)->url($tag) !!}">
+                                <a href="{{ URL::to('/blog/'.Auth::user()->display_name.'/'.$post->olderPost($tag)->slug) }}">
                                     Older
                                     <i class="fa fa-angle-right"></i>
                                 </a>
@@ -89,4 +100,10 @@
             </div>
         </div>
     </div>
+@stop
+
+@section('unique-js')
+
+    @include('frontend.blog.partials.follow')
+
 @stop

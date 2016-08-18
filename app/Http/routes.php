@@ -6,7 +6,8 @@
 */
 Route::get('/', 'Frontend\BlogController@index');
 Route::get('blog', 'Frontend\BlogController@index');
-Route::get('blog/{slug}', 'Frontend\BlogController@showPost');
+Route::get('blog/{id}', 'Frontend\BlogController@showPosts');
+Route::get('blog/{id}/{slug}', 'Frontend\BlogController@showPost');
 
 /*
 |--------------------------------------------------------------------------
@@ -49,8 +50,11 @@ $router->group([
     Route::post('password', 'PasswordController@updatePassword');
     Route::get('register', 'AuthController@showRegistrationForm');
     Route::post('register', 'AuthController@register');
+    Route::post('follow','FollowController@follow');
+    Route::post('unfollow','FollowController@unfollow');
+    Route::get('login/facebook','AuthController@redirectToFacebook');
+    Route::get('login/facebook/callback','AuthController@getFacebookCallback');
 });
 
-Route::auth();
 
 Route::get('/home', 'HomeController@index');

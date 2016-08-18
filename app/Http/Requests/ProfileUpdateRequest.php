@@ -24,7 +24,7 @@ class ProfileUpdateRequest extends Request
         return [
             'first_name' => 'required',
             'last_name' => 'required',
-            'display_name' => 'required',
+            'display_name' => 'required|max:40|unique:users',
             'email' => 'required',
             'job' => 'required',
             'city' => 'required',

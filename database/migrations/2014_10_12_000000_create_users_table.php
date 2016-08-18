@@ -18,6 +18,7 @@ class CreateUsersTable extends Migration
             $table->string('last_name')->nullable();
             $table->string('display_name');
             $table->string('url')->nullable();
+            $table->string('facebook_id')->unique();
             $table->string('twitter')->nullable();
             $table->string('facebook')->nullable();
             $table->string('github')->nullable();

@@ -2,7 +2,7 @@
     {!! csrf_field() !!}
     <div class="form-group fg-line">
         <input type="email" class="form-control"
-               name="email" value="{{ old('email') }}" placeholder="Email">
+               name="email" value="{{ old('email') }}" placeholder="Email" autofocus>
     </div>
     <div class="form-group fg-line">
         <input type="password" name="password" class="form-control"

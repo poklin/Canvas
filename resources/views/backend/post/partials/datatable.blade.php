@@ -14,7 +14,7 @@
             formatters: {
                 "commands": function(column, row) {
                     return "@if(Auth::user()->hasRole('Author'))<a href='/admin/post/" + row.slug + "/edit'><button type='button' class='btn btn-icon command-edit waves-effect waves-circle'><span class='zmdi zmdi-edit'></span></button></a>@endif " +
-                            " <a href='/blog/" + row.slug + "' target='_blank'><button type='button' class='btn btn-icon command-delete waves-effect waves-circle'><span class='zmdi zmdi-search'></span></button></a>";
+                            " <a href='/blog/" + "{{Auth::user()->display_name}}"+"/"+ row.slug  + "' target='_blank'><button type='button' class='btn btn-icon command-delete waves-effect waves-circle'><span class='zmdi zmdi-search'></span></button></a>";
                 },
             }
         });

@@ -34,7 +34,12 @@
 
                         <h2>Manage Posts&nbsp;
                             @if(Auth::user()->hasRole('Author'))
-                            <a href="{{url('admin/post/create')}}"><i class="zmdi zmdi-plus-circle" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Create a new post"></i></a>
+                                @if(Auth::user()->display_name != null)
+                                    <a href="{{url('admin/post/create')}}"><i class="zmdi zmdi-plus-circle" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Create a new post"></i></a>
+                                @else
+                                    - Please Complete Your Profile Before Creating the Posts
+                                    <a href="{{url('admin/profile/'.Auth::user()->id.'/edit')}}"><i class="zmdi zmdi-plus-circle" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Complete profile details"></i></a>
+                                @endif
                             @endif
                             <small>This page provides a comprehensive overview of all current blog posts. Click the edit or preview links next to each post to modify specific details, publish a post or view any changes from the browser.</small>
                         </h2>
@@ -57,9 +62,9 @@
                                     <tr>
                                         <td>{{ $post->id }}</td>
                                         <td>{{ $post->title }}</td>
-                                        <td>{{ $post->subtitle }}</td>
+                                        <td>{{ str_limit($post->subtitle, config('blog.trim_width')) }}</td>
                                         <td>{{ $post->slug }}</td>
-                                        <td>{{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $post->published_at)->format('M d, Y') }}</td>
+                                        <td>{{ $post->published_at }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>

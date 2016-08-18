@@ -1,19 +1,8 @@
 <!-- Vendor Specific -->
-<link rel="stylesheet" type="text/css" href="{{asset('css/bootstrap-datetimepicker.min.css')}}">
-<link rel="stylesheet" type="text/css" href="{{asset('css/animate.min.css')}}">
-<link rel="stylesheet" type="text/css" href="{{asset('css/sweet-alert.min.css')}}">
-<link rel="stylesheet" type="text/css" href="{{asset('css/material-design-iconic-font.min.css')}}">
-<link rel="stylesheet" type="text/css" href="{{asset('css/jquery.mCustomScrollbar.min.css')}}">
-<link rel="stylesheet" type="text/css" href="{{asset('css/bootstrap-select.min.css')}}">
-<link rel="stylesheet" type="text/css" href="{{asset('css/lightgallery.css')}}">
-<link rel="stylesheet" type="text/css" href="{{asset('css/jquery.bootgrid.min.css')}}">
-<link rel="stylesheet" type="text/css" href="{{asset('css/summernote.css')}}">
-<link rel="stylesheet" type="text/css" href="{{asset('css/chosen.min.css')}}">
+<link rel="stylesheet" type="text/css" href="{{ asset('css/vendor.css') }}">
 
-<!-- Application Specific -->
-<link rel="stylesheet" type="text/css" href="{{asset('css/custom.css')}}">
-<link rel="stylesheet" type="text/css" href="{{asset('css/app-1.css')}}">
-<link rel="stylesheet" type="text/css" href="{{asset('css/app-2.css')}}">
+{{--<!-- Application Specific -->--}}
+<link rel="stylesheet" type="text/css" href="{{ asset('css/app.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('css/admin.css') }}">
 
 <!-- Fonts -->

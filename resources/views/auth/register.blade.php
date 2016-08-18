@@ -66,6 +66,20 @@
                             </div>
                         </div>
 
+                        <div class="form-group{{ $errors->has('display_name') ? ' has-error' : '' }}">
+                            <label for="password-confirm" class="col-md-4 control-label">Blog Display Name</label>
+
+                            <div class="col-md-6">
+                                <input id="display_name" type="text" class="form-control" name="display_name" value="{{ old('display_name') }}">
+
+                                @if ($errors->has('display_name'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('display_name') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
                                 <button type="submit" class="btn btn-primary">

@@ -10,11 +10,11 @@ function seoUrl($string)
     // Make the string lowercase
     $string = strtolower($string);
     // Make the string alphanumeric (removes all other characters)
-    $string = preg_replace("/[^a-z0-9_\s-]/", "", $string);
+    $string = preg_replace("/[^a-z0-9_\s-]/", '', $string);
     // Clean up multiple dashes or whitespaces
-    $string = preg_replace("/[\s-]+/", " ", $string);
+    $string = preg_replace("/[\s-]+/", ' ', $string);
     // Convert whitespaces and underscores to dashes
-    $string = preg_replace("/[\s_]/", "-", $string);
+    $string = preg_replace("/[\s_]/", '-', $string);
     return $string;
 }
 
@@ -69,4 +69,25 @@ function page_image($value = null)
         $value = config('blog.uploads.webpath') . '/' . $value;
     }
     return $value;
+}
+
+function strip_image_meta($path, $type)
+{
+    $supported = ['jpg', 'jpeg', 'png'];
+    if(!in_array(strtolower($type), $supported)) {
+        throw new Exception("Unsupported image type: " . $type);
+    }
+    if (!extension_loaded('imagick')) {
+        return false;
+    }
+    try {
+        $image = new \Imagick($path);
+        if ($image->stripImage()) {
+            $image->writeImage($type . ':' . $path); // <-- looks wrong, but the extension prefix forces the file format.
+            return true;
+        }
+    } catch (\Exception $e) {
+        return false;
+    }
+    return false;
 }

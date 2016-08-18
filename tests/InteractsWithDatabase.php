@@ -31,9 +31,9 @@ trait InteractsWithDatabase
     {
         $this->artisan('migrate');
 
-        $this->beforeApplicationDestroyed(function () {
+        /*$this->beforeApplicationDestroyed(function () {
             $this->artisan('migrate:reset');
-        });
+        });*/
     }
 
 }
